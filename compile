@@ -1,0 +1,9 @@
+### compile the library into bcrypt.so
+wget https://www.openwall.com/crypt/crypt_blowfish-1.3.tar.gz
+tar -xvf crypt_blowfish-1.3.tar.gz
+cd crypt_blowfish-1.3
+# fPIC flag is for the shared library
+make CFLAGS+=-fPIC
+make check CFLAGS+=-fPIC
+gcc -v -shared crypt_blowfish.o crypt_gensalt.o wrapper.o -o bcrypt.so
+cp bcrypt.so ../
