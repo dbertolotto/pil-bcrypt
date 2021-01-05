@@ -1,9 +1,32 @@
+# vi: ft=sh
+
 ### compile the library into bcrypt.so
-wget https://www.openwall.com/crypt/crypt_blowfish-1.3.tar.gz
-tar -xvf crypt_blowfish-1.3.tar.gz
-cd crypt_blowfish-1.3
+
+# params
+name="crypt_blowfish-1.3"
+file="${name}.tar.gz"
+lib="bcrypt.so"
+
+# cleanup
+[ -e $name ] && rm -rf $name
+[ -f $file ] && rm -f $file
+
+# download
+wget https://www.openwall.com/crypt/$file
+
+# extract
+tar -xvf $file
+
+# compile
+cd $name
 # fPIC flag is for the shared library
 make CFLAGS+=-fPIC
 make check CFLAGS+=-fPIC
-gcc -v -shared crypt_blowfish.o crypt_gensalt.o wrapper.o -o bcrypt.so
-cp bcrypt.so ../
+
+# generate library
+gcc -v -shared crypt_blowfish.o crypt_gensalt.o wrapper.o -o $lib
+
+# copy library
+cp $lib ../
+
+cd ..
